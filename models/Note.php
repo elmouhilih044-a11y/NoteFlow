@@ -30,7 +30,7 @@ class Note{
 
   public function delete($id){
     $db=Database::getInstance();
-    $stmt=$db->prepare("DELETE notes WHERE id=?");
+    $stmt=$db->prepare("DELETE FROM notes WHERE id=?");
     return $stmt->execute([$id]);
  }
   
