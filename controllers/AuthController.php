@@ -77,4 +77,12 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
  require __DIR__ . '/../views/auth/login.php';
 }
 
+
+public function logout(){
+    session_start();
+    session_destroy();
+    header('Location: index.php?page=login');
+    exit();
+}
+
 }
