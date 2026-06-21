@@ -85,4 +85,66 @@ public function logout(){
     exit();
 }
 
+public function forgotPassword(){
+    if($_SERVER['REQUEST_METHOD']==='POST'){
+          $email = trim($_POST['email']);
+        if (empty($email)) {
+            $error = "Email obligatoire";
+            require __DIR__ . '/../views/auth/forgot_password.php';
+            return;
+        }
+        $userModel=new User();
+        $user = $userModel->findByEmail($email);
+         if (!$user) {
+            $error = "Aucun compte trouvé";
+            require __DIR__ . '/../views/auth/forgot_password.php';
+            return;
+        }
+        $token=bin2hex(random_bytes(32));
+        $userModel->saveResetToken($email,$token);
+          $success = "Lien de réinitialisation : " . "index.php?page=reset_password&token=" . $token;
+             require __DIR__ . '/../views/auth/forgot_password.php';
+             return;
+    }
+  require __DIR__ . '/../views/auth/forgot_password.php';
+}
+
+public function resetPassword(){
+    $token=$_GET['token']??null;
+    if(!$token){
+           $error = "Token manquant";
+        require __DIR__ . '/../views/auth/reset_password.php';
+        return;
+    }
+        $userModel=new User();
+        $user=$userModel->findByToken($token);
+        if(!$user){
+              $error = "Ce lien de réinitialisation est invalide ou a expiré";
+        require __DIR__ . '/../views/auth/reset_password.php';
+        return;
+        }
+
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+                    $password = $_POST['password'];
+        $confirmPassword = $_POST['confirm_password'];
+        
+           if (empty($password) || empty($confirmPassword)) {
+            $error = "Tous les champs sont obligatoires";
+            require __DIR__ . '/../views/auth/reset_password.php';
+            return;
+        }
+
+             if ($password !== $confirmPassword) {
+            $error = "Les mots de passe ne correspondent pas";
+            require __DIR__ . '/../views/auth/reset_password.php';
+            return;
+        }
+
+        $userModel->updatePassword($user['id'],$password);
+        header('Location: index.php?page=login');
+        exit();
+        }
+          require __DIR__ . '/../views/auth/reset_password.php';
+}
+
 }

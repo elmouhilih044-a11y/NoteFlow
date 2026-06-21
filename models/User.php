@@ -36,9 +36,24 @@ class User
 
     public function findById($id)
 {
-    $pdo = Database::getInstance();
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+    $db = Database::getInstance();
+    $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+public function saveResetToken($email,$token){
+    $db=Database::getInstance();
+    $stmt=$db->prepare("UPDATE users SET reset_token=?, reset_token_expiry= DATE_ADD(NOW(),INTERVAL 1 HOUR) WHERE email=?");
+    return $stmt->execute([$token,$email]);
+}
+
+public function updatePassword($user_id,$password){
+$db = Database::getInstance();
+  $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+      $stmt = $db->prepare(" UPDATE users SET password = ?,reset_token = NULL, reset_token_expiry = NULL WHERE id = ?");
+
+        return $stmt->execute([$hashedPassword, $user_id]);
+}
+
 }
