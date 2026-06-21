@@ -29,6 +29,18 @@ class Router
                 $controller->logout();
                 break;
 
+            case 'forgot_password':
+                require_once __DIR__ . '/../controllers/AuthController.php';
+                $controller = new AuthController();
+                $controller->forgotPassword();
+                break;
+
+            case 'reset_password':
+                require_once __DIR__ . '/../controllers/AuthController.php';
+                $controller = new AuthController();
+                $controller->resetPassword();
+                break;
+
             case 'notes':
                 require_once __DIR__ . '/../controllers/NoteController.php';
                 $controller = new NoteController();
@@ -39,6 +51,7 @@ class Router
                     echo "Action non trouvée";
                 }
                 break;
+
 
             case 'profile':
                 require_once __DIR__ . '/../controllers/ProfileController.php';

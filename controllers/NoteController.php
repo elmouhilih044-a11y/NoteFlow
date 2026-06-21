@@ -22,7 +22,7 @@ class NoteController
 
             if (empty($title) || empty($content)) {
                 $error = "Le titre et le contenu sont obligatoires";
-                require __DIR__ . '/../views.notes/create.php';
+                require __DIR__ . '/../views/notes/create.php';
                 return;
             }
             $noteModel = new Note();
@@ -47,7 +47,7 @@ class NoteController
             http_response_code(404);
             exit('Note non trouvée');
         }
-        if ($note['user_id'] !== Auth::id()) {
+        if ($note['user_id'] != Auth::id()) {
             http_response_code(403);
             exit('Accès interdit');
         }
@@ -68,7 +68,7 @@ class NoteController
             http_response_code(404);
             exit('Note non trouvée');
         }
-        if ($note['user_id'] !== Auth::id()) {
+        if ($note['user_id'] != Auth::id()) {
             http_response_code(403);
             exit('Accès interdit');
         }

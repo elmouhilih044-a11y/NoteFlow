@@ -121,6 +121,8 @@ Ou via phpMyAdmin :
 * Créer une base de données nommée `NoteFlow`
 * Importer le fichier `database.sql`
 
+Le fichier `database.sql` crée automatiquement les tables `users` et `notes`, et insère deux comptes de test avec quelques notes associées (voir section *Comptes de test* ci-dessous).
+
 ---
 
 ### 3. Configurer la connexion
@@ -140,7 +142,7 @@ public static function getInstance()
 {
     if (self::$instance === null) {
         self::$instance = new PDO(
-            "mysql:host=localhost;dbname=NoteFlow;charset=utf8",
+            "mysql:host=localhost;dbname=NoteFlow",
             "root",
             ""
         );
@@ -177,6 +179,19 @@ Puis ouvrir :
 ```text
 http://localhost:8000/index.php
 ```
+
+---
+
+## Comptes de test
+
+Le fichier `database.sql` insère automatiquement deux utilisateurs de test, chacun avec quelques notes, pour permettre une démo immédiate sans passer par l'inscription.
+
+| Email | Mot de passe |
+| --- | --- |
+| hajar@example.com | password123 |
+| sara@example.com | azerty123 |
+
+Ces deux comptes sont utiles pour tester directement la vérification du 403 : connecte-toi avec un compte, puis essaie d'accéder à une note appartenant à l'autre utilisateur via l'URL `index.php?page=notes&action=show&id=X` — l'accès doit être refusé.
 
 ---
 
@@ -347,7 +362,7 @@ htmlspecialchars($note['content']);
 
 ### Authentification
 
-1. Créer un compte
+1. Créer un compte (ou utiliser un compte de test)
 2. Se connecter
 3. Modifier son profil
 4. Se déconnecter
@@ -368,16 +383,15 @@ htmlspecialchars($note['content']);
 
 ### Sécurité
 
-1. Créer deux utilisateurs
-2. Se connecter avec le premier utilisateur
-3. Tenter d'accéder à une note appartenant au second utilisateur
-4. Vérifier le retour HTTP 403
+1. Se connecter avec le compte hajar@example.com
+2. Tenter d'accéder à une note appartenant à sara@example.com
+3. Vérifier le retour HTTP 403
 
 ---
 
 ## Auteur
 
-Projet académique réalisé par **Hajar Elmouhili** dans le cadre d'un projet PHP MVC.
+Projet réalisé par **Hajar Elmouhili** dans le cadre d'un projet PHP MVC.
 
 ---
 

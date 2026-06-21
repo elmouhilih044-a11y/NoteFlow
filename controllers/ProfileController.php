@@ -4,7 +4,7 @@ require_once __DIR__ . '/../core/Auth.php';
 
 class ProfileController
 {
-    public function profile()
+    public function update()
     {
         Auth::check();
         $userModel = new User();
@@ -34,7 +34,7 @@ class ProfileController
     return;
 }
             $userModel->update($name,$email,Auth::id());
-            header('Location: index.php?page=profile');
+            header('Location: index.php?page=profile&action=update');
             exit();
         }
          require __DIR__ . '/../views/profile/profile.php';
