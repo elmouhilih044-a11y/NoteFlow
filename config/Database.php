@@ -9,7 +9,7 @@ class Database
     public static function getInstance()
     {
         if (self::$instance == null) {
-            self::$instance = new PDO("mysql:host=localhost;dbname=NoteFlow", "root", "");
+            self::$instance = new PDO("mysql:host=127.0.0.1;dbname=NoteFlow", "root", "123456");
 
             self::$instance->setAttribute(
                 PDO::ATTR_ERRMODE,

@@ -5,6 +5,13 @@ class AuthController
 {
     public function register()
     {
+             // AJOUT : démarre la session seulement si elle n'est pas déjà active
+        if (session_status() === PHP_SESSION_NONE) { session_start(); }
+        // AJOUT : si l'utilisateur est déjà connecté, on le redirige vers ses notes
+        if (isset($_SESSION['user_id'])) {
+            header('Location: index.php?page=notes');
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             $name = trim($_POST['name']);
             $email = trim($_POST['email']);
@@ -49,7 +56,14 @@ class AuthController
 }
 
 public function login(){
-    session_start();
+       // MODIFIÉ : avant c'était juste "session_start();" sans vérification
+        if (session_status() === PHP_SESSION_NONE) { session_start(); }
+        // AJOUT : si l'utilisateur est déjà connecté, on le redirige vers ses notes
+        if (isset($_SESSION['user_id'])) {
+            header('Location: index.php?page=notes');
+            exit();
+        }
+
 
 if($_SERVER['REQUEST_METHOD']==='POST'){
     $email=trim($_POST['email']);
