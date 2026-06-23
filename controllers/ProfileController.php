@@ -33,6 +33,12 @@ class ProfileController
     require __DIR__ . '/../views/profile/profile.php';
     return;
 }
+           $existing = $userModel->findByEmail($email);
+if ($existing && $existing['id'] != Auth::id()) {
+    $error = "Cet email est déjà utilisé par un autre compte.";
+    require __DIR__ . '/../views/profile/profile.php';
+    return;
+}
             $userModel->update($name,$email,Auth::id());
             header('Location: index.php?page=profile&action=update');
             exit();

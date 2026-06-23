@@ -93,7 +93,6 @@ NoteFlow/
 │
 ├── database.sql
 ├── index.php
-├── .htaccess
 └── README.md
 ```
 

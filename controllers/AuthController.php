@@ -5,9 +5,7 @@ class AuthController
 {
     public function register()
     {
-             // AJOUT : démarre la session seulement si elle n'est pas déjà active
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
-        // AJOUT : si l'utilisateur est déjà connecté, on le redirige vers ses notes
         if (isset($_SESSION['user_id'])) {
             header('Location: index.php?page=notes');
             exit();
@@ -30,12 +28,18 @@ class AuthController
             require __DIR__ . '/../views/auth/register.php';
             return;
         }
+        if (strlen($password) < 8) {
+    $error = "Le mot de passe doit contenir au moins 8 caractères.";
+    require __DIR__ . '/../views/auth/register.php';
+    return;
+}
 
         if($password != $confirmPassword){
             $error= "Les mots de passe ne correspondent pas";
             require __DIR__ . '/../views/auth/register.php';
             return;
         }
+        
 
 
     $userModel=new User();
@@ -56,9 +60,8 @@ class AuthController
 }
 
 public function login(){
-       // MODIFIÉ : avant c'était juste "session_start();" sans vérification
+      
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
-        // AJOUT : si l'utilisateur est déjà connecté, on le redirige vers ses notes
         if (isset($_SESSION['user_id'])) {
             header('Location: index.php?page=notes');
             exit();
@@ -93,7 +96,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 
 
 public function logout(){
-    session_start();
+       if (session_status() === PHP_SESSION_NONE) { session_start(); }
     session_destroy();
     header('Location: index.php?page=login');
     exit();
@@ -150,6 +153,11 @@ public function resetPassword(){
             require __DIR__ . '/../views/auth/reset_password.php';
             return;
         }
+        if (strlen($password) < 8) {
+    $error = "Le mot de passe doit contenir au moins 8 caractères.";
+  require __DIR__ . '/../views/auth/reset_password.php'; ;
+    return;
+}
 
              if ($password !== $confirmPassword) {
             $error = "Les mots de passe ne correspondent pas";

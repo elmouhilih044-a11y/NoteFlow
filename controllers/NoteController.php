@@ -36,7 +36,7 @@ class NoteController
     public function show()
     {
         Auth::check();
-        $id = $_GET['id'] ?? null;
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
         if (!$id) {
             http_response_code(404);
             exit('Note non trouvée');
@@ -57,7 +57,7 @@ class NoteController
     public function edit()
     {
         Auth::check();
-        $id = $_GET['id'] ?? null;
+       $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
         if (!$id) {
             http_response_code(404);
             exit('Note non trouvée');
@@ -92,7 +92,7 @@ class NoteController
 
     public function delete(){
         Auth::check();
-        $id=$_GET['id'] ?? null;
+       $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
         if(!$id){
             http_response_code(404);
             exit("Note non trouvée");
