@@ -116,7 +116,10 @@ public function forgotPassword(){
         }
         $token=bin2hex(random_bytes(32));
         $userModel->saveResetToken($email,$token);
-          $success = "Lien de réinitialisation : " . "index.php?page=reset_password&token=" . $token;
+     $link = "index.php?page=reset_password&token=" . $token;
+
+$success = "Un lien de réinitialisation a été généré pour les tests.";
+
              require __DIR__ . '/../views/auth/forgot_password.php';
              return;
     }

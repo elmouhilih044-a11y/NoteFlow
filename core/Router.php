@@ -6,10 +6,19 @@ class Router
     public static function handle()
     {
 
-        $page = $_GET['page'] ?? 'login';
+         $page = $_GET['page'] ?? 'home';
         $action = $_GET['action'] ?? 'index';
 
         switch ($page) {
+
+            case 'home':
+                if (session_status() === PHP_SESSION_NONE) { session_start(); }
+                if (isset($_SESSION['user_id'])) {
+                    header('Location: index.php?page=notes');
+                    exit();
+                }
+                require __DIR__ . '/../views/home.php';
+                break;
 
             case 'login':
                 require_once __DIR__ . '/../controllers/AuthController.php';
